@@ -1,4 +1,4 @@
-name: fec-donors
+name: fec
 
 scripts: scripts/install.sh
 requirements: requirements.txt
