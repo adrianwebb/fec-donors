@@ -1,0 +1,150 @@
+data_mixins:
+    candidate:
+        class: CandidateMixin
+        fields:
+            candidate:
+                type: "@django.ForeignKey"
+                relation: candidate
+                options:
+                    "null": true
+                    on_delete: "@django.PROTECT"
+                    editable: false
+
+    candidate_relation:
+        class: CandidateRelationMixin
+        fields:
+            candidates:
+                type: "@django.ManyToManyField"
+                relation: candidate
+
+    committee:
+        class: CommitteeMixin
+        fields:
+            committee:
+                type: "@django.ForeignKey"
+                relation: committee
+                options:
+                    "null": true
+                    on_delete: "@django.PROTECT"
+                    editable: false
+
+    committee_relation:
+        class: CommitteeRelationMixin
+        fields:
+            committees:
+                type: "@django.ManyToManyField"
+                relation: committee
+
+data_base:
+    candidate:
+        class: CandidateBase
+        base: resource
+        mixins: [candidate]
+        id_fields: [candidate_id, name]
+        meta:
+            unique_together: [candidate, name]
+            scope: candidate
+
+    committee:
+        class: CommitteeBase
+        base: resource
+        mixins: [committee]
+        id_fields: [committee_id, name]
+        meta:
+            unique_together: [committee, name]
+            scope: committee
+
+data:
+    candidate:
+        class: Candidate
+        base: environment
+        id_fields: [candidate_id, environment_id]
+        key: candidate_id
+        roles:
+            edit: [fec-data-admin]
+            view: [public]
+        fields:
+            name: null
+            candidate_id:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            first_name:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            last_name:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            office:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            state:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            district:
+                type: "@django.IntegerField"
+                options:
+                    "null": true
+            party:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+        meta:
+            unique_together: [environment, candidate_id]
+            ordering: [first_name, last_name]
+            search_fields: [first_name, last_name]
+
+    committee:
+        class: Committee
+        base: environment
+        mixins: [candidate_relation]
+        id_fields: [committee_id, environment_id]
+        key: committee_id
+        roles:
+            edit: [fec-data-admin]
+            view: [public]
+        fields:
+            committee_id:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            type:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            designation:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            filing_frequency:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            state:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            party:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+        meta:
+            unique_together: [environment, committee_id]
+            ordering: [name]
+            search_fields: [name]
