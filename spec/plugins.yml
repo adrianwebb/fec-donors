@@ -1,0 +1,38 @@
+plugin:
+    source:
+        providers:
+            candidate:
+                requirement:
+                    year:
+                        type: int
+                        help: "Candidates by year"
+                    office_code:
+                        type: str
+                        help: "US Office code; H (House), S (Senate), P (President)"
+                option:
+                    party_code:
+                        type: str
+                        default: "DEM"
+                        help: "US Party code; DEM (Democrat), REP (Republican)"
+                    candidates:
+                        type: list
+                        default: []
+                        help: "List of candidate names"
+
+            committee:
+                requirement:
+                    year:
+                        type: int
+                        help: "Committees by year"
+                    type_code:
+                        type: str
+                        help: "US Committee code; C (Communication cost), D (Delegate), E (Electioneering communication), H (House), I (Independent expenditor (person or group)), N (PAC - nonqualified), O (Independent expenditure-only (super PACs)), P (Presidential), Q (PAC - qualified), S (Senate), U (Single candidate independent expenditure), V (PAC with non-contribution account, nonqualified), W (PAC with non-contribution account, qualified), X (Party, nonqualified), Y (Party, qualified), Z (National party non-federal account)"
+                option:
+                    party_code:
+                        type: str
+                        default: "DEM"
+                        help: "US Party code; DEM (Democrat), REP (Republican)"
+                    committees:
+                        type: list
+                        default: []
+                        help: "List of committee names"
