@@ -1,0 +1,134 @@
+_candidate_import: &candidate_import
+    source: candidate
+    data: candidate
+    map:
+        candidate_id:
+            column: candidate_id
+            validators:
+                string:
+                    empty: False
+        first_name:
+            column: first_name
+            validators:
+                string:
+                    empty: False
+        last_name:
+            column: last_name
+            validators:
+                string:
+                    empty: False
+        office:
+            column: office
+            validators:
+                string:
+                    pattern: "^(House|Senate|President)$"
+        state:
+            column: state
+            validators:
+                string:
+                    pattern: "^[A-Z]+$"
+        district:
+            column: district
+            validators:
+                number:
+                    min: 0
+        party:
+            column: party
+            validators:
+                string:
+                    empty: False
+
+_committee_import: &committee_import
+    source: committee
+    data: committee
+    relations:
+        candidates:
+            data: candidate
+            id: candidate_id
+            column: candidate_ids
+            multiple: true
+            separator: ","
+            required: true
+    map:
+        committee_id:
+            column: committee_id
+            validators:
+                string:
+                    empty: False
+        name:
+            column: name
+            validators:
+                string:
+                    empty: False
+        type:
+            column: type
+            validators:
+                string:
+                    empty: False
+        designation:
+            column: designation
+            validators:
+                string:
+                    empty: False
+        filing_frequency:
+            column: filing_frequency
+            validators:
+                string:
+                    pattern: "^[A-Z]$"
+        state:
+            column: state
+            validators:
+                string:
+                    pattern: "^[A-Z]+$"
+        party:
+            column: party
+            validators:
+                string:
+                    empty: False
+
+import:
+    president-2016:
+        <<: *candidate_import
+        year: 2016
+        office_code: P
+
+    house-2016:
+        <<: *candidate_import
+        year: 2016
+        office_code: H
+
+    senate-2016:
+        <<: *candidate_import
+        year: 2016
+        office_code: S
+
+    house-2018:
+        <<: *candidate_import
+        year: 2018
+        office_code: H
+
+    senate-2018:
+        <<: *candidate_import
+        year: 2018
+        office_code: S
+
+    president-2020:
+        <<: *candidate_import
+        year: 2016
+        office_code: P
+
+    house-2020:
+        <<: *candidate_import
+        year: 2016
+        office_code: H
+
+    senate-2020:
+        <<: *candidate_import
+        year: 2020
+        office_code: S
+
+    house-committee-2016:
+        <<: *committee_import
+        requires: house-2016
+        year: 2016
+        type_code: H
