@@ -132,3 +132,153 @@ import:
         requires: house-2016
         year: 2016
         type_code: H
+
+    senate-committee-2016:
+        <<: *committee_import
+        requires: senate-2016
+        year: 2016
+        type_code: S
+
+    president-committee-2016:
+        <<: *committee_import
+        requires: president-2016
+        year: 2016
+        type_code: P
+
+    pac-nonqualified-committee-2016:
+        <<: *committee_import
+        requires: [president-2016, house-2016, senate-2016]
+        year: 2016
+        type_code: N
+
+    pac-independent-committee-2016:
+        <<: *committee_import
+        requires: [president-2016, house-2016, senate-2016]
+        year: 2016
+        type_code: O
+
+    pac-qualified-committee-2016:
+        <<: *committee_import
+        requires: [president-2016, house-2016, senate-2016]
+        year: 2016
+        type_code: Q
+
+    party-nonqualified-committee-2016:
+        <<: *committee_import
+        requires: [president-2016, house-2016, senate-2016]
+        year: 2016
+        type_code: X
+
+    party-qualified-committee-2016:
+        <<: *committee_import
+        requires: [president-2016, house-2016, senate-2016]
+        year: 2016
+        type_code: Y
+
+    party-non-federal-committee-2016:
+        <<: *committee_import
+        requires: [president-2016, house-2016, senate-2016]
+        year: 2016
+        type_code: Z
+
+    house-committee-2018:
+        <<: *committee_import
+        requires: house-2018
+        year: 2018
+        type_code: H
+
+    senate-committee-2018:
+        <<: *committee_import
+        requires: senate-2018
+        year: 2018
+        type_code: S
+
+    pac-nonqualified-committee-2018:
+        <<: *committee_import
+        requires: [house-2018, senate-2018]
+        year: 2018
+        type_code: N
+
+    pac-independent-committee-2018:
+        <<: *committee_import
+        requires: [house-2018, senate-2018]
+        year: 2018
+        type_code: O
+
+    pac-qualified-committee-2018:
+        <<: *committee_import
+        requires: [house-2018, senate-2018]
+        year: 2018
+        type_code: Q
+
+    party-nonqualified-committee-2018:
+        <<: *committee_import
+        requires: [house-2018, senate-2018]
+        year: 2018
+        type_code: X
+
+    party-qualified-committee-2018:
+        <<: *committee_import
+        requires: [house-2018, senate-2018]
+        year: 2018
+        type_code: Y
+
+    party-non-federal-committee-2018:
+        <<: *committee_import
+        requires: [house-2018, senate-2018]
+        year: 2018
+        type_code: Z
+
+    house-committee-2020:
+        <<: *committee_import
+        requires: house-2020
+        year: 2020
+        type_code: H
+
+    senate-committee-2020:
+        <<: *committee_import
+        requires: senate-2020
+        year: 2020
+        type_code: S
+
+    president-committee-2020:
+        <<: *committee_import
+        requires: president-2020
+        year: 2020
+        type_code: P
+
+    pac-nonqualified-committee-2020:
+        <<: *committee_import
+        requires: [president-2020, house-2020, senate-2020]
+        year: 2020
+        type_code: N
+
+    pac-independent-committee-2020:
+        <<: *committee_import
+        requires: [president-2020, house-2020, senate-2020]
+        year: 2020
+        type_code: O
+
+    pac-qualified-committee-2020:
+        <<: *committee_import
+        requires: [president-2020, house-2020, senate-2020]
+        year: 2020
+        type_code: Q
+
+    party-nonqualified-committee-2020:
+        <<: *committee_import
+        requires: [president-2020, house-2020, senate-2020]
+        year: 2020
+        type_code: X
+
+    party-qualified-committee-2020:
+        <<: *committee_import
+        requires: [president-2020, house-2020, senate-2020]
+        year: 2020
+        type_code: Y
+
+    party-non-federal-committee-2020:
+        <<: *committee_import
+        requires: [president-2020, house-2020, senate-2020]
+        year: 2020
+        type_code: Z
