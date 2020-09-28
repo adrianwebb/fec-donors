@@ -1,10 +1,8 @@
 from pyopenfec import ScheduleATransaction
 
 from systems.plugins.index import BaseProvider
-from django.core.serializers.json import DjangoJSONEncoder
 
 import pandas
-import json
 
 
 class Provider(BaseProvider('source', 'receipt')):
@@ -23,12 +21,10 @@ class Provider(BaseProvider('source', 'receipt')):
             is_individual =  True,
             per_page = 100
         )
-        index = 0
         for receipt in receipts:
             if receipt.committee_id and receipt.committee_id in committees:
-                transaction_id = receipt.transaction_id if receipt.transaction_id else receipt.sub_id
                 data.append([
-                    transaction_id,
+                    receipt.transaction_id if receipt.transaction_id else receipt.sub_id,
                     receipt.report_year,
                     receipt.committee_id,
                     receipt.candidate_id,
@@ -45,11 +41,7 @@ class Provider(BaseProvider('source', 'receipt')):
                     receipt.contributor_employer.strip().title() if receipt.contributor_employer else None,
                     receipt.contributor_occupation.strip().title() if receipt.contributor_occupation else None
                 ])
-                if index >= 3:
-                    break
-                index = index + 1
 
-        print(data)
         return pandas.DataFrame(data, columns = [
             'transaction_id',
             'report_year',
