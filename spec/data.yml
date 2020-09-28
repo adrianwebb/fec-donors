@@ -148,3 +148,86 @@ data:
             unique_together: [environment, committee_id]
             ordering: [name]
             search_fields: [name]
+
+    receipt:
+        class: Receipt
+        base: committee
+        mixins: [candidate]
+        id_fields: [transaction_id, committee_id]
+        key: transaction_id
+        roles:
+            edit: [fec-data-admin]
+            view: [public]
+        fields:
+            name: null
+            transaction_id:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            year:
+                type: "@django.IntegerField"
+                options:
+                    "null": true
+            type:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 10
+            amount:
+                type: "@django.FloatField"
+                options:
+                    "null": true
+            first_name:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            middle_name:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            last_name:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            address_1:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            address_2:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            city:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            state:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            zip:
+                type: "@django.IntegerField"
+                options:
+                    "null": true
+            employer:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            occupation:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+        meta:
+            unique_together: [committee, transaction_id]
+            ordering: [first_name, middle_name, last_name]
+            search_fields: [first_name, middle_name, last_name]
