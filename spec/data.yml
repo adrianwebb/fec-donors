@@ -214,9 +214,10 @@ data:
                     "null": true
                     max_length: 256
             zip:
-                type: "@django.IntegerField"
+                type: "@django.CharField"
                 options:
                     "null": true
+                    max_length: 25
             employer:
                 type: "@django.CharField"
                 options:
