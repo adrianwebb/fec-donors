@@ -14,11 +14,12 @@ class Provider(BaseProvider('source', 'candidate')):
             year = self.field_year,
             name = self.field_candidates,
             office = self.field_office_code,
-            party = [ self.field_party_code ]
+            party = [ self.field_party_code ],
+            per_page = 100
         )
         for candidate in candidates:
             name_components = self._normalize_name_components(candidate.name)
-            if name_components:
+            if name_components and len(name_components) >= 2:
                 data.append([
                     candidate.candidate_id,
                     self._format_name(name_components[1].split()[0]),
