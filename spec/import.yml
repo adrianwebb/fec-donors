@@ -6,17 +6,17 @@ _candidate_import: &candidate_import
             column: candidate_id
             validators:
                 string:
-                    empty: False
+                    empty: false
         first_name:
             column: first_name
             validators:
                 string:
-                    empty: False
+                    empty: false
         last_name:
             column: last_name
             validators:
                 string:
-                    empty: False
+                    empty: false
         office:
             column: office
             validators:
@@ -36,7 +36,7 @@ _candidate_import: &candidate_import
             column: party
             validators:
                 string:
-                    empty: False
+                    empty: false
 
 _committee_import: &committee_import
     source: committee
@@ -54,22 +54,22 @@ _committee_import: &committee_import
             column: committee_id
             validators:
                 string:
-                    empty: False
+                    empty: false
         name:
             column: name
             validators:
                 string:
-                    empty: False
+                    empty: false
         type:
             column: type
             validators:
                 string:
-                    empty: False
+                    empty: false
         designation:
             column: designation
             validators:
                 string:
-                    empty: False
+                    empty: false
         filing_frequency:
             column: filing_frequency
             validators:
@@ -84,7 +84,68 @@ _committee_import: &committee_import
             column: party
             validators:
                 string:
-                    empty: False
+                    empty: false
+
+_receipt_import: &receipt_import
+    source: receipt
+    data: receipt
+    relations:
+        committee_id:
+            data: committee
+            id: committee_id
+            column: committee_id
+            required: true
+        candidate_id:
+            data: candidate
+            id: candidate_id
+            column: candidate_id
+    map:
+        transaction_id:
+            column: transaction_id
+            validators:
+                string:
+                    empty: false
+        year:
+            column: report_year
+            validators:
+                number:
+                    min: 0
+        type:
+            column: election_type
+            validators:
+                string:
+                    pattern: "^[A-Z]([0-9]+)?$"
+        amount:
+            column: contribution_receipt_amount
+            validators:
+                number:
+                    min: 0
+        first_name:
+            column: contributor_first_name
+            validators:
+                string:
+                    empty: false
+        middle_name:
+            column: contributor_middle_name
+        last_name:
+            column: contributor_last_name
+            validators:
+                string:
+                    empty: false
+        address_1:
+            column: contributor_street_1
+        address_2:
+            column: contributor_street_2
+        city:
+            column: contributor_city
+        state:
+            column: contributor_state
+        zip:
+            column: contributor_zip
+        employer:
+            column: contributor_employer
+        occupation:
+            column: contributor_occupation
 
 import:
     president-2016:
@@ -282,3 +343,18 @@ import:
         requires: [president-2020, house-2020, senate-2020]
         year: 2020
         type_code: Z
+
+    committee-receipts-2016:
+        <<: *receipt_import
+        requires: [house-committee-2016, senate-committee-2016, president-committee-2016, pac-nonqualified-committee-2016, pac-independent-committee-2016, pac-qualified-committee-2016, party-nonqualified-committee-2016, party-qualified-committee-2016, party-non-federal-committee-2016]
+        year: 2016
+
+    committee-receipts-2018:
+        <<: *receipt_import
+        requires: [house-committee-2016, senate-committee-2016, pac-nonqualified-committee-2016, pac-independent-committee-2016, pac-qualified-committee-2016, party-nonqualified-committee-2016, party-qualified-committee-2016, party-non-federal-committee-2016]
+        year: 2018
+
+    committee-receipts-2020:
+        <<: *receipt_import
+        requires: [house-committee-2020, senate-committee-2020, president-committee-2020, pac-nonqualified-committee-2020, pac-independent-committee-2020, pac-qualified-committee-2020, party-nonqualified-committee-2020, party-qualified-committee-2020, party-non-federal-committee-2020]
+        year: 2020
