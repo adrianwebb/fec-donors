@@ -13,7 +13,8 @@ class Provider(BaseProvider('source', 'committee')):
             year = self.field_year,
             q = self.field_committees,
             committee_type = self.field_type_code,
-            party = [ self.field_party_code ]
+            party = [ self.field_party_code ],
+            per_page = 100
         )
         for committee in committees:
             data.append([
