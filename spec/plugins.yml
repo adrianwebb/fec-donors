@@ -36,3 +36,9 @@ plugin:
                         type: list
                         default: []
                         help: "List of committee names"
+
+            receipt:
+                requirement:
+                    year:
+                        type: int
+                        help: "Receipts by year"
