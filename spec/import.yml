@@ -1,6 +1,8 @@
 _candidate_import: &candidate_import
     source: candidate
     data: candidate
+    candidates:
+        - "Bernard Sanders"
     map:
         candidate_id:
             column: candidate_id
@@ -351,7 +353,7 @@ import:
 
     committee-receipts-2018:
         <<: *receipt_import
-        requires: [house-committee-2016, senate-committee-2016, pac-nonqualified-committee-2016, pac-independent-committee-2016, pac-qualified-committee-2016, party-nonqualified-committee-2016, party-qualified-committee-2016, party-non-federal-committee-2016]
+        requires: [house-committee-2018, senate-committee-2018, pac-nonqualified-committee-2018, pac-independent-committee-2018, pac-qualified-committee-2018, party-nonqualified-committee-2018, party-qualified-committee-2018, party-non-federal-committee-2018]
         year: 2018
 
     committee-receipts-2020:
