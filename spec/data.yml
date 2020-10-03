@@ -35,6 +35,24 @@ data_mixins:
                 type: "@django.ManyToManyField"
                 relation: committee
 
+    contributor:
+        class: ContributorMixin
+        fields:
+            contributor:
+                type: "@django.ForeignKey"
+                relation: contributor
+                options:
+                    "null": true
+                    on_delete: "@django.PROTECT"
+                    editable: false
+
+    contributor_relation:
+        class: ContributorRelationMixin
+        fields:
+            contributors:
+                type: "@django.ManyToManyField"
+                relation: contributor
+
 data_base:
     candidate:
         class: CandidateBase
@@ -53,6 +71,15 @@ data_base:
         meta:
             unique_together: [committee, name]
             scope: committee
+
+    contributor:
+        class: ContributorBase
+        base: resource
+        mixins: [contributor]
+        id_fields: [contributor_id, name]
+        meta:
+            unique_together: [contributor, name]
+            scope: contributor
 
 data:
     candidate:
@@ -149,35 +176,21 @@ data:
             ordering: [name]
             search_fields: [name]
 
-    receipt:
-        class: Receipt
-        base: committee
-        mixins: [candidate]
-        id_fields: [transaction_id, committee_id]
-        key: transaction_id
+    contributor:
+        class: Contributor
+        base: environment
+        id_fields: [contributor_id, environment_id]
+        key: contributor_id
         roles:
             edit: [fec-data-admin]
             view: [public]
         fields:
             name: null
-            transaction_id:
+            contributor_id:
                 type: "@django.CharField"
                 options:
                     "null": true
                     max_length: 256
-            year:
-                type: "@django.IntegerField"
-                options:
-                    "null": true
-            type:
-                type: "@django.CharField"
-                options:
-                    "null": true
-                    max_length: 10
-            amount:
-                type: "@django.FloatField"
-                options:
-                    "null": true
             first_name:
                 type: "@django.CharField"
                 options:
@@ -229,6 +242,40 @@ data:
                     "null": true
                     max_length: 256
         meta:
-            unique_together: [committee, transaction_id]
+            unique_together: [environment, contributor_id]
             ordering: [first_name, middle_name, last_name]
-            search_fields: [first_name, middle_name, last_name]
+            search_fields: [first_name, middle_name, last_name, city, state, zip, employer]
+
+    receipt:
+        class: Receipt
+        base: contributor
+        mixins: [committee]
+        id_fields: [transaction_id, committee_id, contributor_id]
+        key: transaction_id
+        roles:
+            edit: [fec-data-admin]
+            view: [public]
+        fields:
+            name: null
+            transaction_id:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            year:
+                type: "@django.IntegerField"
+                options:
+                    "null": true
+            type:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 10
+            amount:
+                type: "@django.FloatField"
+                options:
+                    "null": true
+        meta:
+            unique_together: [committee, contributor, transaction_id]
+            ordering: [contributor_id, year, amount]
+            search_fields: [contributor_id, committee_id, year]
