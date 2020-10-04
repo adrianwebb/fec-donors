@@ -1,0 +1,162 @@
+_candidate_import: &candidate_import
+    source: candidate
+    party_codes: [DEM, IND]
+    candidates:
+        - "Bernard Sanders"
+    data:
+        year:
+            map:
+                name:
+                    column: year
+                    validators:
+                        number:
+                            min: 0
+        political_office:
+            map:
+                name:
+                    column: office_id
+                    validators:
+                        string:
+                            pattern: "^[A-Z]+$"
+                full_name:
+                    column: office_name
+                    validators:
+                        string:
+                            empty: false
+        political_party:
+            map:
+                name:
+                    column: party_id
+                    validators:
+                        string:
+                            pattern: "^[A-Z]+$"
+                full_name:
+                    column: party_name
+                    validators:
+                        string:
+                            empty: false
+        us_state:
+            map:
+                name:
+                    column: state_id
+                    validators:
+                        string:
+                            pattern: "^[A-Z]+$"
+        us_district:
+            requires: [us_state]
+            relations:
+                state_id:
+                    data: us_state
+                    column: state_id
+                    required: true
+            map:
+                name:
+                    column: district_id
+                    validators:
+                        string:
+                            empty: false
+                number:
+                    column: district_number
+                    validators:
+                        number:
+                            min: 0
+        candidate:
+            requires: [political_office, political_party]
+            relations:
+                office_id:
+                    data: political_office
+                    column: office_id
+                    required: true
+                party_id:
+                    data: political_party
+                    column: party_id
+                    required: true
+            map:
+                candidate_id:
+                    column: candidate_id
+                    validators:
+                        string:
+                            empty: false
+                first_name:
+                    column: first_name
+                    validators:
+                        string:
+                            empty: false
+                last_name:
+                    column: last_name
+                    validators:
+                        string:
+                            empty: false
+        candidacy:
+            requires: [candidate, us_district, year]
+            relations:
+                candidate_id:
+                    data: candidate
+                    column: candidate_id
+                    required: true
+                district_id:
+                    data: us_district
+                    column: district_id
+                    required: true
+                year_id:
+                    data: year
+                    column: year
+                    required: true
+                    validators:
+                        number:
+                            min: 0
+            map:
+                candidacy_id:
+                    column: candidacy_id
+                    validators:
+                        string:
+                            empty: false
+
+import:
+    president-2016:
+        <<: *candidate_import
+        tags: [2016, president, candidate]
+        years: 2016
+        office_codes: P
+
+    house-2016:
+        <<: *candidate_import
+        tags: [2016, house, candidate]
+        years: 2016
+        office_codes: H
+
+    senate-2016:
+        <<: *candidate_import
+        tags: [2016, senate, candidate]
+        years: 2016
+        office_codes: S
+
+    house-2018:
+        <<: *candidate_import
+        tags: [2018, house, candidate]
+        years: 2018
+        office_codes: H
+
+    senate-2018:
+        <<: *candidate_import
+        tags: [2018, senate, candidate]
+        years: 2018
+        office_codes: S
+
+    president-2020:
+        <<: *candidate_import
+        tags: [2020, president, candidate]
+        years: 2016
+        office_codes: P
+
+    house-2020:
+        <<: *candidate_import
+        tags: [2020, house, candidate]
+        years: 2016
+        office_codes: H
+
+    senate-2020:
+        <<: *candidate_import
+        tags: [2020, senate, candidate]
+        years: 2020
+        office_codes: S

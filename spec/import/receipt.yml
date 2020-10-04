@@ -1,0 +1,150 @@
+_receipt_import: &receipt_import
+    source: receipt
+    data:
+        year:
+            map:
+                name:
+                    column: year
+                    validators:
+                        number:
+                            min: 0
+        us_state:
+            map:
+                name:
+                    column: state_id
+                    validators:
+                        string:
+                            pattern: "^[A-Z]+$"
+        us_city:
+            requires: [us_state]
+            relations:
+                state_id:
+                    data: us_state
+                    column: state_id
+                    required: true
+            map:
+                name:
+                    column: city
+                    validators:
+                        string:
+                            empty: false
+        us_zipcode:
+            requires: [us_state]
+            relations:
+                state_id:
+                    data: us_state
+                    column: state_id
+                    required: true
+            map:
+                name:
+                    column: zipcode
+                    validators:
+                        string:
+                            empty: false
+        employer:
+            map:
+                name:
+                    column: employer
+                    validators:
+                        string:
+                            empty: false
+        occupation:
+            map:
+                name:
+                    column: occupation
+                    validators:
+                        string:
+                            empty: false
+        contributor:
+            requires: [us_state, us_city, us_zipcode, employer, occupation]
+            relations:
+                state_id:
+                    data: us_state
+                    column: state_id
+                    required: true
+                city_id:
+                    data: us_city
+                    column: city
+                    required: true
+                zipcode_id:
+                    data: us_zipcode
+                    column: zipcode
+                    required: true
+                employer_id:
+                    data: employer
+                    column: employer
+                occupation_id:
+                    data: occupation
+                    column: occupation
+            map:
+                contributor_id:
+                    column: contributor_id
+                    validators:
+                        string:
+                            empty: false
+                first_name:
+                    column: first_name
+                    validators:
+                        string:
+                            empty: false
+                middle_name:
+                    column: middle_name
+                last_name:
+                    column: last_name
+                    validators:
+                        string:
+                            empty: false
+                address_1:
+                    column: street_1
+                address_2:
+                    column: street_2
+        receipt:
+            requires: [contributor, year]
+            relations:
+                contributor_id:
+                    data: contributor
+                    column: contributor_id
+                    required: true
+                committee_id:
+                    data: committee
+                    column: committee_id
+                    required: true
+                year_id:
+                    data: year
+                    column: year
+                    required: true
+                    validators:
+                        number:
+                            min: 0
+            map:
+                transaction_id:
+                    column: transaction_id
+                    validators:
+                        string:
+                            empty: false
+                type:
+                    column: election_type
+                amount:
+                    column: amount
+                    validators:
+                        number:
+                            min: 0
+
+import:
+    committee-receipts-2016:
+        <<: *receipt_import
+        tags: [2016, receipt]
+        requires: [house-committee-2016, senate-committee-2016, president-committee-2016, pac-nonqualified-committee-2016, pac-independent-committee-2016, pac-qualified-committee-2016, party-nonqualified-committee-2016, party-qualified-committee-2016, party-non-federal-committee-2016]
+        years: 2016
+
+    committee-receipts-2018:
+        <<: *receipt_import
+        tags: [2018, receipt]
+        requires: [house-committee-2018, senate-committee-2018, pac-nonqualified-committee-2018, pac-independent-committee-2018, pac-qualified-committee-2018, party-nonqualified-committee-2018, party-qualified-committee-2018, party-non-federal-committee-2018]
+        years: 2018
+
+    committee-receipts-2020:
+        <<: *receipt_import
+        tags: [2020, receipt]
+        requires: [house-committee-2020, senate-committee-2020, president-committee-2020, pac-nonqualified-committee-2020, pac-independent-committee-2020, pac-qualified-committee-2020, party-nonqualified-committee-2020, party-qualified-committee-2020, party-non-federal-committee-2020]
+        years: 2020
