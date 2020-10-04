@@ -1,0 +1,51 @@
+plugin_mixins:
+    fec_source:
+        class: FECSourceMixin
+
+plugin:
+    source:
+        providers:
+            candidate:
+                mixins: [fec_source]
+                requirement:
+                    years:
+                        type: list
+                        help: "Candidates by years"
+                    office_codes:
+                        type: list
+                        help: "US Office code; H (House), S (Senate), P (President)"
+                option:
+                    party_codes:
+                        type: list
+                        default: null
+                        help: "US Party code; DEM (Democrat), REP (Republican), IND (Independent)"
+                    candidates:
+                        type: list
+                        default: null
+                        help: "List of candidate names"
+
+            committee:
+                mixins: [fec_source]
+                requirement:
+                    years:
+                        type: list
+                        help: "Committees by years"
+                    type_codes:
+                        type: list
+                        help: "US Committee code; C (Communication cost), D (Delegate), E (Electioneering communication), H (House), I (Independent expenditor (person or group)), N (PAC - nonqualified), O (Independent expenditure-only (super PACs)), P (Presidential), Q (PAC - qualified), S (Senate), U (Single candidate independent expenditure), V (PAC with non-contribution account, nonqualified), W (PAC with non-contribution account, qualified), X (Party, nonqualified), Y (Party, qualified), Z (National party non-federal account)"
+                option:
+                    party_codes:
+                        type: list
+                        default: null
+                        help: "US Party code; DEM (Democrat), REP (Republican), IND (Independent)"
+                    committees:
+                        type: list
+                        default: null
+                        help: "List of committee names"
+
+            receipt:
+                mixins: [fec_source]
+                requirement:
+                    years:
+                        type: list
+                        help: "Receipts by years"
