@@ -1,0 +1,60 @@
+data_mixins:
+    candidate:
+        class: CandidateMixin
+        fields:
+            candidate:
+                type: "@django.ForeignKey"
+                relation: candidate
+                options:
+                    "null": true
+                    on_delete: "@django.PROTECT"
+                    editable: false
+
+    candidate_relation:
+        class: CandidateRelationMixin
+        fields:
+            candidates:
+                type: "@django.ManyToManyField"
+                relation: candidate
+
+data_base:
+    candidate:
+        class: CandidateBase
+        base: resource
+        mixins: [candidate]
+        id_fields: [candidate_id, name]
+        meta:
+            unique_together: [candidate, name]
+            scope: candidate
+
+data:
+    candidate:
+        class: Candidate
+        base: environment
+        mixins: [political_party, political_office]
+        id_fields: [candidate_id, environment_id]
+        key: candidate_id
+        roles:
+            edit: [fec-data-admin]
+            view: [public]
+        fields:
+            name: null
+            candidate_id:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            first_name:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            last_name:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+        meta:
+            unique_together: [environment, candidate_id]
+            ordering: [first_name, last_name]
+            search_fields: [first_name, last_name, party__name, party__full_name, office__name, office__fullname]

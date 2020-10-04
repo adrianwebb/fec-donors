@@ -1,0 +1,36 @@
+data_mixins:
+    employer:
+        class: EmployerMixin
+        fields:
+            employer:
+                type: "@django.ForeignKey"
+                relation: employer
+                options:
+                    "null": true
+                    on_delete: "@django.PROTECT"
+                    editable: false
+
+    employer_relation:
+        class: EmployerRelationMixin
+        fields:
+            employers:
+                type: "@django.ManyToManyField"
+                relation: employer
+
+data_base:
+    employer:
+        class: EmployerBase
+        base: resource
+        mixins: [employer]
+        id_fields: [employer_id, name]
+        meta:
+            unique_together: [employer, name]
+            scope: employer
+
+data:
+    employer:
+        class: Employer
+        base: environment
+        roles:
+            edit: [fec-data-admin]
+            view: [public]

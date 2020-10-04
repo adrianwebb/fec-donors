@@ -1,0 +1,45 @@
+data_mixins:
+    political_party:
+        class: PoliticalPartyMixin
+        fields:
+            party:
+                type: "@django.ForeignKey"
+                relation: political_party
+                options:
+                    "null": true
+                    on_delete: "@django.PROTECT"
+                    editable: false
+
+    political_party_relation:
+        class: PoliticalPartyRelationMixin
+        fields:
+            parties:
+                type: "@django.ManyToManyField"
+                relation: political_party
+
+data_base:
+    political_party:
+        class: PoliticalPartyBase
+        base: resource
+        mixins: [political_party]
+        id_fields: [party_id, name]
+        meta:
+            unique_together: [party, name]
+            scope: party
+
+data:
+    political_party:
+        class: PoliticalParty
+        base: environment
+        roles:
+            edit: [fec-data-admin]
+            view: [public]
+        fields:
+            full_name:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+        meta:
+            ordering: [full_name]
+            search_fields: [name, full_name]

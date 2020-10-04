@@ -1,0 +1,59 @@
+data_mixins:
+    receipt:
+        class: ReceiptMixin
+        fields:
+            receipt:
+                type: "@django.ForeignKey"
+                relation: receipt
+                options:
+                    "null": true
+                    on_delete: "@django.PROTECT"
+                    editable: false
+
+    receipt_relation:
+        class: ReceiptRelationMixin
+        fields:
+            receipts:
+                type: "@django.ManyToManyField"
+                relation: receipt
+
+data_base:
+    receipt:
+        class: ReceiptBase
+        base: resource
+        mixins: [receipt]
+        id_fields: [receipt_id, name]
+        meta:
+            unique_together: [receipt, name]
+            scope: receipt
+
+data:
+    receipt:
+        class: Receipt
+        base: contributor
+        mixins: [committee, year]
+        id_fields: [transaction_id, committee_id, contributor_id]
+        key: transaction_id
+        roles:
+            edit: [fec-data-admin]
+            view: [public]
+        fields:
+            name: null
+            transaction_id:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 256
+            type:
+                type: "@django.CharField"
+                options:
+                    "null": true
+                    max_length: 10
+            amount:
+                type: "@django.FloatField"
+                options:
+                    "null": true
+        meta:
+            unique_together: [committee, contributor, transaction_id]
+            ordering: [contributor_id, year__name, amount]
+            search_fields: [contributor_id, committee_id, year__name]

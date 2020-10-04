@@ -1,0 +1,44 @@
+data_mixins:
+    us_district:
+        class: USDistrictMixin
+        fields:
+            district:
+                type: "@django.ForeignKey"
+                relation: us_district
+                options:
+                    "null": true
+                    on_delete: "@django.PROTECT"
+                    editable: false
+
+    us_district_relation:
+        class: USDistrictRelationMixin
+        fields:
+            districts:
+                type: "@django.ManyToManyField"
+                relation: us_district
+
+data_base:
+    us_district:
+        class: USDistrictBase
+        base: resource
+        mixins: [us_district]
+        id_fields: [district_id, name]
+        meta:
+            unique_together: [district, name]
+            scope: district
+
+data:
+    us_district:
+        class: USDistrict
+        base: us_state
+        roles:
+            edit: [fec-data-admin]
+            view: [public]
+        fields:
+            number:
+                type: "@django.IntegerField"
+                options:
+                    "null": true
+        meta:
+            ordering: [name]
+            search_fields: [name, number]
