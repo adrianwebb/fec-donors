@@ -1,0 +1,8 @@
+command_base:
+    fec:
+        server_enabled: true
+        groups_allowed: [fec-data-admin]
+
+command:
+    us:
+        priority: 80
