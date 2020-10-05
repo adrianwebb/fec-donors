@@ -34,3 +34,25 @@ data:
         roles:
             edit: [fec-data-admin]
             view: [public]
+
+command_mixins:
+    us_state:
+        class: USStateMixin
+        meta:
+            state:
+                data: us_state
+                priority: 1
+
+command_base:
+    us_state:
+        mixins: [us_state]
+        server_enabled: true
+        groups_allowed: [fec-data-admin]
+
+command:
+    us:
+        state:
+            resource: us_state
+            base_name: state
+            base: us_state
+            priority: 1

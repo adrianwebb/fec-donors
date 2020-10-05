@@ -34,3 +34,24 @@ data:
         roles:
             edit: [fec-data-admin]
             view: [public]
+
+command_mixins:
+    occupation:
+        class: OccupationMixin
+        meta:
+            occupation:
+                data: occupation
+                priority: 1
+
+command_base:
+    occupation:
+        mixins: [occupation]
+        server_enabled: true
+        groups_allowed: [fec-data-admin]
+
+command:
+    occupation:
+        resource: occupation
+        base_name: occupation
+        base: occupation
+        priority: 105

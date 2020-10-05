@@ -62,3 +62,25 @@ data:
             unique_together: [environment, committee_id]
             ordering: [name]
             search_fields: [name, political_party__name, political_party__full_name, us_state__name]
+
+command_mixins:
+    committee:
+        class: CommitteeMixin
+        mixins: [candidate, year, us_state]
+        meta:
+            committee:
+                data: committee
+                priority: 3
+
+command_base:
+    committee:
+        mixins: [committee]
+        server_enabled: true
+        groups_allowed: [fec-data-admin]
+
+command:
+    committee:
+        resource: committee
+        base_name: committee
+        base: committee
+        priority: 100

@@ -43,3 +43,24 @@ data:
         meta:
             ordering: [full_name]
             search_fields: [name, full_name]
+
+command_mixins:
+    political_office:
+        class: PoliticalOfficeMixin
+        meta:
+            office:
+                data: political_office
+                priority: 1
+
+command_base:
+    political_office:
+        mixins: [political_office]
+        server_enabled: true
+        groups_allowed: [fec-data-admin]
+
+command:
+    office:
+        resource: political_office
+        base_name: office
+        base: political_office
+        priority: 75

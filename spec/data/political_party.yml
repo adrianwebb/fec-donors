@@ -43,3 +43,24 @@ data:
         meta:
             ordering: [full_name]
             search_fields: [name, full_name]
+
+command_mixins:
+    political_party:
+        class: PoliticalPartyMixin
+        meta:
+            party:
+                data: political_party
+                priority: 1
+
+command_base:
+    political_party:
+        mixins: [political_party]
+        server_enabled: true
+        groups_allowed: [fec-data-admin]
+
+command:
+    party:
+        resource: political_party
+        base_name: party
+        base: political_party
+        priority: 75

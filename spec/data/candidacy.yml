@@ -48,3 +48,25 @@ data:
             unique_together: [candidate, candidacy_id]
             ordering: ["-year__name"]
             search_fields: [candidate__first_name, candidate__last_name, year__name]
+
+command_mixins:
+    candidacy:
+        class: CandidacyMixin
+        mixins: [candidate, us_district, year]
+        meta:
+            candidacy:
+                data: candidacy
+                priority: 3
+
+command_base:
+    candidacy:
+        mixins: [candidacy]
+        server_enabled: true
+        groups_allowed: [fec-data-admin]
+
+command:
+    candidacy:
+        resource: candidacy
+        base_name: candidacy
+        base: candidacy
+        priority: 90

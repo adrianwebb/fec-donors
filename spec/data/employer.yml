@@ -34,3 +34,24 @@ data:
         roles:
             edit: [fec-data-admin]
             view: [public]
+
+command_mixins:
+    employer:
+        class: EmployerMixin
+        meta:
+            employer:
+                data: employer
+                priority: 1
+
+command_base:
+    employer:
+        mixins: [employer]
+        server_enabled: true
+        groups_allowed: [fec-data-admin]
+
+command:
+    employer:
+        resource: employer
+        base_name: employer
+        base: employer
+        priority: 105

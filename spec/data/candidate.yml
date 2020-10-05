@@ -58,3 +58,25 @@ data:
             unique_together: [environment, candidate_id]
             ordering: [first_name, last_name]
             search_fields: [first_name, last_name, party__name, party__full_name, office__name, office__fullname]
+
+command_mixins:
+    candidate:
+        class: CandidateMixin
+        mixins: [political_office, political_party]
+        meta:
+            candidate:
+                data: candidate
+                priority: 2
+
+command_base:
+    candidate:
+        mixins: [candidate]
+        server_enabled: true
+        groups_allowed: [fec-data-admin]
+
+command:
+    candidate:
+        resource: candidate
+        base_name: candidate
+        base: candidate
+        priority: 85

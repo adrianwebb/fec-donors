@@ -34,3 +34,26 @@ data:
         roles:
             edit: [fec-data-admin]
             view: [public]
+
+command_mixins:
+    us_zipcode:
+        class: USZipcodeMixin
+        mixins: [us_state]
+        meta:
+            zipcode:
+                data: us_zipcode
+                priority: 2
+
+command_base:
+    us_zipcode:
+        mixins: [us_zipcode]
+        server_enabled: true
+        groups_allowed: [fec-data-admin]
+
+command:
+    us:
+        zipcode:
+            resource: us_zipcode
+            base_name: zipcode
+            base: us_zipcode
+            priority: 4

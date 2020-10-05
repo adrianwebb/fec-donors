@@ -34,3 +34,24 @@ data:
         roles:
             edit: [fec-data-admin]
             view: [public]
+
+command_mixins:
+    year:
+        class: YearMixin
+        meta:
+            year:
+                data: year
+                priority: 1
+
+command_base:
+    year:
+        mixins: [year]
+        server_enabled: true
+        groups_allowed: [fec-data-admin]
+
+command:
+    year:
+        resource: year
+        base_name: year
+        base: year
+        priority: 70

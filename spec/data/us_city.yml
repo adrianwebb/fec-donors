@@ -34,3 +34,26 @@ data:
         roles:
             edit: [fec-data-admin]
             view: [public]
+
+command_mixins:
+    us_city:
+        class: USCityMixin
+        mixins: [us_state]
+        meta:
+            city:
+                data: us_city
+                priority: 2
+
+command_base:
+    us_city:
+        mixins: [us_city]
+        server_enabled: true
+        groups_allowed: [fec-data-admin]
+
+command:
+    us:
+        city:
+            resource: us_city
+            base_name: city
+            base: us_city
+            priority: 3

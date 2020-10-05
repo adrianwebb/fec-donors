@@ -73,3 +73,25 @@ data:
             unique_together: [environment, contributor_id]
             ordering: [first_name, middle_name, last_name]
             search_fields: [first_name, middle_name, last_name, city__name, state__name, zipcode__name, employer__name]
+
+command_mixins:
+    contributor:
+        class: ContributorMixin
+        mixins: [us_state, us_city, us_zipcode, employer, occupation]
+        meta:
+            contributor:
+                data: contributor
+                priority: 3
+
+command_base:
+    contributor:
+        mixins: [contributor]
+        server_enabled: true
+        groups_allowed: [fec-data-admin]
+
+command:
+    contributor:
+        resource: contributor
+        base_name: contributor
+        base: contributor
+        priority: 110

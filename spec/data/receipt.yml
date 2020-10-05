@@ -57,3 +57,25 @@ data:
             unique_together: [committee, contributor, transaction_id]
             ordering: [contributor_id, year__name, amount]
             search_fields: [contributor_id, committee_id, year__name]
+
+command_mixins:
+    receipt:
+        class: ReceiptMixin
+        mixins: [contributor, committee]
+        meta:
+            receipt:
+                data: receipt
+                priority: 4
+
+command_base:
+    receipt:
+        mixins: [receipt]
+        server_enabled: true
+        groups_allowed: [fec-data-admin]
+
+command:
+    receipt:
+        resource: receipt
+        base_name: receipt
+        base: receipt
+        priority: 115
