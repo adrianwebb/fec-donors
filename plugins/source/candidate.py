@@ -46,15 +46,19 @@ class Provider(BaseProvider('source', 'candidate')):
         return ensure_list(self.field_years)
 
     def load_items(self, year):
-        return Candidate.fetch(
+        print('fetching candidate')
+        candidates = Candidate.fetch(
             cycle = [ year ],
             name = ensure_list(self.field_candidates, True),
             office = ensure_list(self.field_office_codes, True),
             party = ensure_list(self.field_party_codes, True),
             per_page = self.page_count
         )
+        print(candidates)
+        return candidates
 
     def load_item(self, candidate, year):
+        print(candidate)
         name_components = self._normalize_name_components(candidate.name)
         if name_components and len(name_components) >= 2:
             cycle_info = self._find_most_recent_year(candidate.cycles, year)
