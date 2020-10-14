@@ -1,8 +1,6 @@
 _candidate_import: &candidate_import
     source: candidate
     party_codes: [DEM, IND]
-    candidates:
-        - "Bernard Sanders"
     data:
         year:
             map:
