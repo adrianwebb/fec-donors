@@ -59,7 +59,11 @@ class Provider(BaseProvider('source', 'candidate')):
         if name_components and len(name_components) >= 2:
             cycle_info = self._find_most_recent_year(candidate.cycles, year)
             election_info = self._find_most_recent_year(candidate.election_years, year)
-            district_number = int(candidate.election_districts[election_info['index']])
+
+            try:
+                district_number = int(candidate.election_districts[election_info['index']])
+            except Exception:
+                district_number = None
 
             if district_number != 0:
                 district_id = "{}{}".format(candidate.state, str(district_number))
