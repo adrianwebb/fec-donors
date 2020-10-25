@@ -9,3 +9,5 @@ config_store:
             zone: a
         fec-b:
             zone: b
+
+    aws_nat_subnets: "#values(@aws_service_subnets || zone);"
