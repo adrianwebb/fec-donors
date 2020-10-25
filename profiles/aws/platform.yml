@@ -1,0 +1,10 @@
+parents:
+    - module: host
+      profile: aws/platform
+
+    - aws/config
+
+profile:
+    platform-service:
+        module: fec
+        profile: aws/service

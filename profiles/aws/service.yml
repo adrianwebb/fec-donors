@@ -1,0 +1,10 @@
+parents:
+    - module: host
+      profile: aws/platform/service
+
+    - aws/config
+
+post_run:
+    app-environment:
+        env:
+            OPENFEC_API_KEY: "@fec_openapi_key"
