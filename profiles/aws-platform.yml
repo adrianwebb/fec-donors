@@ -1,0 +1,18 @@
+config:
+    platform_name: fec
+
+    aws_networks:
+        - us-east-1
+
+    aws_service_subnets:
+        fec-a:
+            zone: a
+        fec-b:
+            zone: b
+
+    aws_nat_subnets: "#values(@aws_service_subnets || zone);"
+
+profile:
+    platform:
+        module: host
+        profile: aws/platform
