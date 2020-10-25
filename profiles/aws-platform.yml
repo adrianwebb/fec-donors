@@ -1,4 +1,4 @@
-config:
+config_store:
     platform_name: fec
 
     aws_networks:
@@ -11,8 +11,3 @@ config:
             zone: b
 
     aws_nat_subnets: "#values(@aws_service_subnets || zone);"
-
-profile:
-    platform:
-        module: host
-        profile: aws/platform
