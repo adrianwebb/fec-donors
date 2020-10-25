@@ -4,6 +4,9 @@ parents:
 
     - aws/config
 
+config:
+    aws_service_worker_subnet_names: "#keys(@aws_service_subnets || @aws_service_worker_subnet_prefix);"
+
 server:
     fec-importer:
         count: 1
