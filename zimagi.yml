@@ -2,3 +2,7 @@ name: fec
 
 scripts: scripts/install.sh
 requirements: requirements.txt
+
+modules:
+    - remote: https://github.com/zimagi/host.git
+      reference: master
