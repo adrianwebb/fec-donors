@@ -1,0 +1,52 @@
+parents:
+    - module: host
+      profile: aws/config
+
+    - aws/config
+
+server:
+    fec-importer:
+        count: 1
+        provider: ec2
+        network: "@aws_network_names[0]"
+        subnet: "@aws_service_worker_subnet_names[0]"
+        image: "@aws_ubuntu_image[<network>]"
+        ssh_port: "@ssh_port"
+        user: "@aws_ubuntu_user"
+        machine: "@aws_service_worker_machine"
+        tenancy: "@aws_service_worker_tenancy"
+        monitoring: "@aws_service_worker_monitoring"
+        ebs_optimized: "@aws_service_worker_ebs_optimized"
+        groups: "@service_group"
+        volumes:
+            "/var/lib/postgresql":
+                provider: aws_ebs
+                type: ext4
+                location: "@aws_importer_data_device"
+                ebs_type: "@aws_importer_ebs_type"
+                ebs_size: "@aws_importer_ebs_data_size"
+                ebs_iops: "@aws_importer_ebs_iops"
+                ebs_encrypted: "@aws_importer_ebs_encrypted"
+        firewalls:
+            - internet
+            - ssh-external
+            - "@{data_firewall_prefix}@{database_name}"
+
+post_run:
+    credentials:
+        command: server rotate
+        scopes:
+            network: "@aws_network_names[0]"
+        server_search:
+            - subnet.network.name=<network>
+            - name=fec-importer
+
+    user-environment:
+        requires: credentials
+        module: cluster
+        task: user-environment
+        scopes:
+            network: "@aws_network_names[0]"
+        servers:
+            - subnet.network.name=<network>
+            - name=fec-importer

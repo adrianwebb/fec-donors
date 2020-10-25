@@ -11,3 +11,10 @@ config_store:
             zone: b
 
     aws_nat_subnets: "#values(@aws_service_subnets || zone);"
+
+config:
+    aws_importer_ebs_type: gp2
+    aws_importer_ebs_data_size: 2500
+    aws_importer_ebs_iops: null
+    aws_importer_ebs_encrypted: false
+    aws_importer_data_device: /dev/xvdb
