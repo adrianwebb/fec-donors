@@ -1,8 +1,8 @@
 parents:
+    - aws/config
+
     - module: host
       profile: aws/platform
-
-    - aws/config
 
 profile:
     platform-service:

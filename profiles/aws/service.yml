@@ -1,8 +1,8 @@
 parents:
+    - aws/config
+
     - module: host
       profile: aws/platform/service
-
-    - aws/config
 
 post_run:
     app-environment:
