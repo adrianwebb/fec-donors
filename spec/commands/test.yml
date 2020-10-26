@@ -1,4 +1,0 @@
-command:
-    test:
-        base: fec
-        priority: 1000
