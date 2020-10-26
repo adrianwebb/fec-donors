@@ -48,7 +48,6 @@ class Provider(BaseProvider('source', 'candidate')):
         return ensure_list(self.field_years)
 
     def load_items(self, year):
-        print(os.environ['OPENFEC_API_KEY'])
         return Candidate.fetch(
             cycle = [ year ],
             name = ensure_list(self.field_candidates, True),
