@@ -32,12 +32,14 @@ class Provider(BaseProvider('source', 'committee')):
         return contexts
 
     def load_items(self, context):
+        type_codes = ensure_list(self.field_type_codes, True) if self.field_type_codes else None
+        party_codes = ensure_list(self.field_party_codes, True) if self.field_party_codes else None
+
         return Committee.fetch(
             candidate_id = [ context['candidate_id'] ],
             year = [ context['year'] ],
-            q = ensure_list(self.field_committees, True),
-            committee_type = ensure_list(self.field_type_codes, True),
-            party = ensure_list(self.field_party_codes, True),
+            committee_type = type_codes,
+            party = party_codes,
             per_page = self.page_count
         )
 
