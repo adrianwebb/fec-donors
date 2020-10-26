@@ -76,9 +76,9 @@ class Provider(BaseProvider('source', 'committee_db')):
         return contexts
 
     def load_items(self, context):
-        query = "select cycles, committee_id, name, committee_type_full, designation_full, filing_frequency, state, party, party_full, candidate_ids from disclosure.ofec_committee_history"
+        query = ("select cycles, committee_id, name, committee_type_full, designation_full, filing_frequency, state, party, party_full, candidate_ids from disclosure.ofec_committee_history"
                 " where candidate_ids @> ARRAY['%s']"
-                " and cycles_has_activity @> ARRAY[%s]"
+                " and cycles_has_activity @> ARRAY[%s]")
 
         args = [context['candidate_id'], context['year']]
 
