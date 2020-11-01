@@ -1,7 +1,6 @@
-from pyopenfec import ScheduleATransaction
-
 from systems.plugins.index import BaseProvider
-from utility.data import ensure_list, get_identifier
+from utility.fec_api import OpenFECAPI
+from utility.data import get_identifier
 
 
 class Provider(BaseProvider('source', 'receipt')):
@@ -26,20 +25,14 @@ class Provider(BaseProvider('source', 'receipt')):
             'year'
         ]
 
-    def load_contexts(self):
-        return self.facade_index['committee'].field_values('committee_id')
+    def load_items(self, context):
+        return OpenFECReceipts(
+            self.command,
+            self.field_year,
+            self.page_count
+        ).fetch()
 
-    def load_items(self, committee_id):
-        return ScheduleATransaction.fetch(
-            committee_id = [ committee_id ],
-            two_year_transaction_period = ensure_list(self.field_years, True),
-            is_individual =  True,
-            sort_null_only = True,
-            per_page = self.page_count
-        )
-
-    def load_item(self, receipt, committee_id):
-        transaction_id = receipt.transaction_id if receipt.transaction_id else receipt.sub_id
+    def load_item(self, receipt, context):
         first_name = receipt.contributor_first_name.strip().title() if receipt.contributor_first_name else None
         middle_name = receipt.contributor_middle_name.strip().title() if receipt.contributor_middle_name else None
         last_name = receipt.contributor_last_name.strip().title() if receipt.contributor_last_name else None
@@ -73,9 +66,65 @@ class Provider(BaseProvider('source', 'receipt')):
             zipcode,
             employer,
             occupation,
-            transaction_id,
+            receipt.sub_id,
             receipt.committee_id,
             receipt.election_type,
             receipt.contribution_receipt_amount,
             receipt.report_year
         ]
+
+
+class OpenFECReceipts(OpenFECAPI):
+
+    @property
+    def state_id(self):
+        return "receipt-index-{}".format(self.year)
+
+
+    def fetch(self):
+        endpoint = 'schedules/schedule_a'
+        options = {}
+        last_index = None
+
+        indexes = self.command.get_state(self.state_id, None)
+        if indexes:
+            options['last_index'] = indexes['last_index']
+            options['last_contribution_receipt_date'] = indexes['last_contribution_receipt_date']
+
+        options['is_individual'] = True
+        options['two_year_transaction_period'] = [ self.year ]
+        options['sort'] = 'contribution_receipt_date'
+
+        initial_results = self.request(endpoint, options)
+
+        if initial_results.get('results', None) and len(initial_results['results']) > 0:
+            for result in initial_results['results']:
+                yield type('Receipt', (object,), result)
+
+        if initial_results.get('pagination', None):
+            if initial_results['pagination'].get('pages', None):
+                if initial_results['pagination']['pages'] > 1:
+                    indexes = initial_results['pagination']['last_indexes']
+                    last_index = int(indexes['last_index'])
+                    last_date = indexes['last_contribution_receipt_date']
+                    self.command.set_state(self.state_id, indexes)
+
+        if last_index:
+            while last_index is not None:
+                params = dict(options)
+                params['last_index'] = int(last_index)
+                params['last_contribution_receipt_date'] = last_date
+                indexed_results = self.request(endpoint, params)
+
+                if indexed_results.get('results', None) and len(indexed_results['results']) > 0:
+                    for result in indexed_results['results']:
+                        yield type('Receipt', (object,), result)
+
+                    indexes = indexed_results['pagination']['last_indexes']
+                    last_index = indexes['last_index']
+                    last_date = indexes['last_contribution_receipt_date']
+                    self.command.set_state(self.state_id, indexes)
+                else:
+                    last_index = None
+
+        self.command.delete_state(self.state_id)
