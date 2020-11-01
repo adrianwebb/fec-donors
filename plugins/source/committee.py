@@ -29,7 +29,7 @@ class Provider(BaseProvider('source', 'committee')):
         return [
             cycle_info['year'],
             committee.committee_id,
-            committee.name.strip().title() if committee.name else None,
+            committee.name.strip().title() if committee.name and committee.name != 'NONE' else None,
             committee.committee_type if committee.committee_type else None,
             committee.designation if committee.designation else None,
             committee.filing_frequency,
