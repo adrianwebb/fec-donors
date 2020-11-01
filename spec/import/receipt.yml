@@ -1,4 +1,4 @@
-_receipt_import: &receipt_import
+_receipt_api_import: &receipt_api_import
     source: receipt
     data:
         year:
@@ -8,6 +8,7 @@ _receipt_import: &receipt_import
                     validators:
                         number:
                             min: 0
+                    formatter: integer
         us_state:
             map:
                 name:
@@ -131,20 +132,68 @@ _receipt_import: &receipt_import
                             min: 0
 
 import:
+    committee-receipts-2000:
+        <<: *receipt_api_import
+        tags: [2000, receipt]
+        requires: [committees-2000]
+        year: 2000
+
+    committee-receipts-2002:
+        <<: *receipt_api_import
+        tags: [2002, receipt]
+        requires: [committees-2002]
+        year: 2002
+
+    committee-receipts-2004:
+        <<: *receipt_api_import
+        tags: [2004, receipt]
+        requires: [committees-2004]
+        year: 2004
+
+    committee-receipts-2006:
+        <<: *receipt_api_import
+        tags: [2006, receipt]
+        requires: [committees-2006]
+        year: 2006
+
+    committee-receipts-2008:
+        <<: *receipt_api_import
+        tags: [2008, receipt]
+        requires: [committees-2008]
+        year: 2008
+
+    committee-receipts-2010:
+        <<: *receipt_api_import
+        tags: [2010, receipt]
+        requires: [committees-2010]
+        year: 2010
+
+    committee-receipts-2012:
+        <<: *receipt_api_import
+        tags: [2012, receipt]
+        requires: [committees-2012]
+        year: 2012
+
+    committee-receipts-2014:
+        <<: *receipt_api_import
+        tags: [2014, receipt]
+        requires: [committees-2014]
+        year: 2014
+
     committee-receipts-2016:
-        <<: *receipt_import
+        <<: *receipt_api_import
         tags: [2016, receipt]
-        requires: [house-committee-2016, senate-committee-2016, president-committee-2016, pac-nonqualified-committee-2016, pac-independent-committee-2016, pac-qualified-committee-2016, party-nonqualified-committee-2016, party-qualified-committee-2016, party-non-federal-committee-2016]
-        years: 2016
+        requires: [committees-2016]
+        year: 2016
 
     committee-receipts-2018:
-        <<: *receipt_import
+        <<: *receipt_api_import
         tags: [2018, receipt]
-        requires: [house-committee-2018, senate-committee-2018, pac-nonqualified-committee-2018, pac-independent-committee-2018, pac-qualified-committee-2018, party-nonqualified-committee-2018, party-qualified-committee-2018, party-non-federal-committee-2018]
-        years: 2018
+        requires: [committees-2018]
+        year: 2018
 
     committee-receipts-2020:
-        <<: *receipt_import
-        tags: [2020, receipt]
-        requires: [house-committee-2020, senate-committee-2020, president-committee-2020, pac-nonqualified-committee-2020, pac-independent-committee-2020, pac-qualified-committee-2020, party-nonqualified-committee-2020, party-qualified-committee-2020, party-non-federal-committee-2020]
-        years: 2020
+        <<: *receipt_api_import
+        tags: [2020, current, receipt]
+        requires: [committees-2020]
+        year: 2020
