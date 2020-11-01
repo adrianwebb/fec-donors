@@ -1,4 +1,4 @@
-_committee_import: &committee_import
+_committee_api_import: &committee_api_import
     source: committee
     data:
         year:
@@ -8,6 +8,7 @@ _committee_import: &committee_import
                     validators:
                         number:
                             min: 0
+                    formatter: integer
         political_party:
             map:
                 name:
@@ -15,11 +16,6 @@ _committee_import: &committee_import
                     validators:
                         string:
                             pattern: "^[A-Z]+$"
-                full_name:
-                    column: party_name
-                    validators:
-                        string:
-                            empty: false
         us_state:
             map:
                 name:
@@ -28,20 +24,18 @@ _committee_import: &committee_import
                         string:
                             pattern: "^[A-Z]+$"
         committee:
-            requires: [political_party, us_state]
+            requires: [year, political_party, us_state]
             relations:
                 candidates:
                     data: candidate
                     column: candidate_ids
                     multiple: true
                     separator: ","
-                    required: true
                 years:
                     data: year
                     column: year
                     multiple: true
                     separator: ","
-                    required: true
                 party_id:
                     data: political_party
                     column: party_id
@@ -76,184 +70,68 @@ _committee_import: &committee_import
                             pattern: "^[A-Z]$"
 
 import:
-    house-committee-2016:
-        <<: *committee_import
-        tags: [2016, house, candidate-committee, committee]
-        requires: house-2016
-        years: 2016
-        type_codes: H
+    committees-2000:
+        <<: *committee_api_import
+        tags: [2000, committee]
+        requires: [candidates-2000]
+        year: 2000
 
-    senate-committee-2016:
-        <<: *committee_import
-        tags: [2016, senate, candidate-committee, committee]
-        requires: senate-2016
-        years: 2016
-        type_codes: S
+    committees-2002:
+        <<: *committee_api_import
+        tags: [2002, committee]
+        requires: [candidates-2002]
+        year: 2002
 
-    president-committee-2016:
-        <<: *committee_import
-        tags: [2016, president, candidate-committee, committee]
-        requires: president-2016
-        years: 2016
-        type_codes: P
+    committees-2004:
+        <<: *committee_api_import
+        tags: [2004, committee]
+        requires: [candidates-2004]
+        year: 2004
 
-    pac-nonqualified-committee-2016:
-        <<: *committee_import
-        tags: [2016, pac, committee]
-        requires: [president-2016, house-2016, senate-2016]
-        years: 2016
-        type_codes: N
+    committees-2006:
+        <<: *committee_api_import
+        tags: [2006, committee]
+        requires: [candidates-2006]
+        year: 2006
 
-    pac-independent-committee-2016:
-        <<: *committee_import
-        tags: [2016, pac, committee]
-        requires: [president-2016, house-2016, senate-2016]
-        years: 2016
-        type_codes: O
+    committees-2008:
+        <<: *committee_api_import
+        tags: [2008, committee]
+        requires: [candidates-2008]
+        year: 2008
 
-    pac-qualified-committee-2016:
-        <<: *committee_import
-        tags: [2016, pac, committee]
-        requires: [president-2016, house-2016, senate-2016]
-        years: 2016
-        type_codes: Q
+    committees-2010:
+        <<: *committee_api_import
+        tags: [2010, committee]
+        requires: [candidates-2010]
+        year: 2010
 
-    party-nonqualified-committee-2016:
-        <<: *committee_import
-        tags: [2016, party, committee]
-        requires: [president-2016, house-2016, senate-2016]
-        years: 2016
-        type_codes: X
+    committees-2012:
+        <<: *committee_api_import
+        tags: [2012, committee]
+        requires: [candidates-2012]
+        year: 2012
 
-    party-qualified-committee-2016:
-        <<: *committee_import
-        tags: [2016, party, committee]
-        requires: [president-2016, house-2016, senate-2016]
-        years: 2016
-        type_codes: Y
+    committees-2014:
+        <<: *committee_api_import
+        tags: [2014, committee]
+        requires: [candidates-2014]
+        year: 2014
 
-    party-non-federal-committee-2016:
-        <<: *committee_import
-        tags: [2016, party, committee]
-        requires: [president-2016, house-2016, senate-2016]
-        years: 2016
-        type_codes: Z
+    committees-2016:
+        <<: *committee_api_import
+        tags: [2016, committee]
+        requires: [candidates-2016]
+        year: 2016
 
-    house-committee-2018:
-        <<: *committee_import
-        tags: [2018, house, candidate-committee, committee]
-        requires: house-2018
-        years: 2018
-        type_codes: H
+    committees-2018:
+        <<: *committee_api_import
+        tags: [2018, committee]
+        requires: [candidates-2018]
+        year: 2018
 
-    senate-committee-2018:
-        <<: *committee_import
-        tags: [2018, senate, candidate-committee, committee]
-        requires: senate-2018
-        years: 2018
-        type_codes: S
-
-    pac-nonqualified-committee-2018:
-        <<: *committee_import
-        tags: [2018, pac, committee]
-        requires: [house-2018, senate-2018]
-        years: 2018
-        type_codes: N
-
-    pac-independent-committee-2018:
-        <<: *committee_import
-        tags: [2018, pac, committee]
-        requires: [house-2018, senate-2018]
-        years: 2018
-        type_codes: O
-
-    pac-qualified-committee-2018:
-        <<: *committee_import
-        tags: [2018, pac, committee]
-        requires: [house-2018, senate-2018]
-        years: 2018
-        type_codes: Q
-
-    party-nonqualified-committee-2018:
-        <<: *committee_import
-        tags: [2018, party, committee]
-        requires: [house-2018, senate-2018]
-        years: 2018
-        type_codes: X
-
-    party-qualified-committee-2018:
-        <<: *committee_import
-        tags: [2018, party, committee]
-        requires: [house-2018, senate-2018]
-        years: 2018
-        type_codes: Y
-
-    party-non-federal-committee-2018:
-        <<: *committee_import
-        tags: [2018, party, committee]
-        requires: [house-2018, senate-2018]
-        years: 2018
-        type_codes: Z
-
-    house-committee-2020:
-        <<: *committee_import
-        tags: [2020, house, candidate-committee, committee]
-        requires: house-2020
-        years: 2020
-        type_codes: H
-
-    senate-committee-2020:
-        <<: *committee_import
-        tags: [2020, senate, candidate-committee, committee]
-        requires: senate-2020
-        years: 2020
-        type_codes: S
-
-    president-committee-2020:
-        <<: *committee_import
-        tags: [2020, president, candidate-committee, committee]
-        requires: president-2020
-        years: 2020
-        type_codes: P
-
-    pac-nonqualified-committee-2020:
-        <<: *committee_import
-        tags: [2020, pac, committee]
-        requires: [president-2020, house-2020, senate-2020]
-        years: 2020
-        type_codes: N
-
-    pac-independent-committee-2020:
-        <<: *committee_import
-        tags: [2020, pac, committee]
-        requires: [president-2020, house-2020, senate-2020]
-        years: 2020
-        type_codes: O
-
-    pac-qualified-committee-2020:
-        <<: *committee_import
-        tags: [2020, pac, committee]
-        requires: [president-2020, house-2020, senate-2020]
-        years: 2020
-        type_codes: Q
-
-    party-nonqualified-committee-2020:
-        <<: *committee_import
-        tags: [2020, party, committee]
-        requires: [president-2020, house-2020, senate-2020]
-        years: 2020
-        type_codes: X
-
-    party-qualified-committee-2020:
-        <<: *committee_import
-        tags: [2020, party, committee]
-        requires: [president-2020, house-2020, senate-2020]
-        years: 2020
-        type_codes: Y
-
-    party-non-federal-committee-2020:
-        <<: *committee_import
-        tags: [2020, party, committee]
-        requires: [president-2020, house-2020, senate-2020]
-        years: 2020
-        type_codes: Z
+    committees-2020:
+        <<: *committee_api_import
+        tags: [2020, current, committee]
+        requires: [candidates-2020]
+        year: 2020
