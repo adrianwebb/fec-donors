@@ -1,6 +1,5 @@
-_candidate_import: &candidate_import
+_candidate_api_import: &candidate_api_import
     source: candidate
-    party_codes: [DEM, IND]
     data:
         year:
             map:
@@ -9,6 +8,7 @@ _candidate_import: &candidate_import
                     validators:
                         number:
                             min: 0
+                    formatter: integer
         political_office:
             map:
                 name:
@@ -16,11 +16,6 @@ _candidate_import: &candidate_import
                     validators:
                         string:
                             pattern: "^[A-Z]+$"
-                full_name:
-                    column: office_name
-                    validators:
-                        string:
-                            empty: false
         political_party:
             map:
                 name:
@@ -28,11 +23,6 @@ _candidate_import: &candidate_import
                     validators:
                         string:
                             pattern: "^[A-Z]+$"
-                full_name:
-                    column: party_name
-                    validators:
-                        string:
-                            empty: false
         us_state:
             map:
                 name:
@@ -58,6 +48,7 @@ _candidate_import: &candidate_import
                     validators:
                         number:
                             min: 0
+                    formatter: integer
         candidate:
             requires: [political_office, political_party]
             relations:
@@ -68,7 +59,6 @@ _candidate_import: &candidate_import
                 party_id:
                     data: political_party
                     column: party_id
-                    required: true
             map:
                 candidate_id:
                     column: candidate_id
@@ -111,50 +101,57 @@ _candidate_import: &candidate_import
                             empty: false
 
 import:
-    president-2016:
-        <<: *candidate_import
-        tags: [2016, president, candidate]
-        years: 2016
-        office_codes: P
+    candidates-2000:
+        <<: *candidate_api_import
+        tags: [2000, candidate]
+        year: 2000
 
-    house-2016:
-        <<: *candidate_import
-        tags: [2016, house, candidate]
-        years: 2016
-        office_codes: H
+    candidates-2002:
+        <<: *candidate_api_import
+        tags: [2002, candidate]
+        year: 2002
 
-    senate-2016:
-        <<: *candidate_import
-        tags: [2016, senate, candidate]
-        years: 2016
-        office_codes: S
+    candidates-2004:
+        <<: *candidate_api_import
+        tags: [2004, candidate]
+        year: 2004
 
-    house-2018:
-        <<: *candidate_import
-        tags: [2018, house, candidate]
-        years: 2018
-        office_codes: H
+    candidates-2006:
+        <<: *candidate_api_import
+        tags: [2006, candidate]
+        year: 2006
 
-    senate-2018:
-        <<: *candidate_import
-        tags: [2018, senate, candidate]
-        years: 2018
-        office_codes: S
+    candidates-2008:
+        <<: *candidate_api_import
+        tags: [2008, candidate]
+        year: 2008
 
-    president-2020:
-        <<: *candidate_import
-        tags: [2020, president, candidate]
-        years: 2016
-        office_codes: P
+    candidates-2010:
+        <<: *candidate_api_import
+        tags: [2010, candidate]
+        year: 2010
 
-    house-2020:
-        <<: *candidate_import
-        tags: [2020, house, candidate]
-        years: 2016
-        office_codes: H
+    candidates-2012:
+        <<: *candidate_api_import
+        tags: [2012, candidate]
+        year: 2012
 
-    senate-2020:
-        <<: *candidate_import
-        tags: [2020, senate, candidate]
-        years: 2020
-        office_codes: S
+    candidates-2014:
+        <<: *candidate_api_import
+        tags: [2014, candidate]
+        year: 2014
+
+    candidates-2016:
+        <<: *candidate_api_import
+        tags: [2016, candidate]
+        year: 2016
+
+    candidates-2018:
+        <<: *candidate_api_import
+        tags: [2018, candidate]
+        year: 2018
+
+    candidates-2020:
+        <<: *candidate_api_import
+        tags: [2020, current, candidate]
+        year: 2020
