@@ -1,0 +1,19 @@
+import:
+    parties:
+        source: csv_file
+        file: import/party_index.csv
+        data_type: str
+        tags: [party]
+        data:
+            political_party:
+                map:
+                    name:
+                        column: Code
+                        validators:
+                            string:
+                                empty: false
+                    full_name:
+                        column: Name
+                        validators:
+                            string:
+                                empty: false

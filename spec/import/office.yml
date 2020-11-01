@@ -1,0 +1,19 @@
+import:
+    offices:
+        source: csv_file
+        file: import/political_office_index.csv
+        data_type: str
+        tags: [political_office]
+        data:
+            political_office:
+                map:
+                    name:
+                        column: Code
+                        validators:
+                            string:
+                                empty: false
+                    full_name:
+                        column: Name
+                        validators:
+                            string:
+                                empty: false
