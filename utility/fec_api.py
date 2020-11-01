@@ -42,7 +42,7 @@ class OpenFECAPI(object):
         logger.debug(response.url)
 
         if response.status_code != 200:
-            raise OpenFECException("OpenFEC API returned status code: %s".format(response.status_code))
+            raise OpenFECException("OpenFEC API returned status code: {}".format(response.status_code))
 
         return response.json()
 
