@@ -1,7 +1,5 @@
-from pyopenfec import Committee
-
 from systems.plugins.index import BaseProvider
-from utility.data import ensure_list
+from utility.fec_api import OpenFECAPI
 
 
 class Provider(BaseProvider('source', 'committee')):
@@ -16,44 +14,72 @@ class Provider(BaseProvider('source', 'committee')):
             'filing_frequency',
             'state_id',
             'party_id',
-            'party_name',
             'candidate_ids'
         ]
 
-    def load_contexts(self):
-        candidates = list(self.facade_index['candidate'].field_values('candidate_id'))
-        contexts = []
-        for year in ensure_list(self.field_years):
-            for candidate_id in candidates:
-                contexts.append({
-                    'year': year,
-                    'candidate_id': candidate_id
-                })
-        return contexts
-
     def load_items(self, context):
-        type_codes = ensure_list(self.field_type_codes, True) if self.field_type_codes else None
-        party_codes = ensure_list(self.field_party_codes, True) if self.field_party_codes else None
-
-        return Committee.fetch(
-            candidate_id = [ context['candidate_id'] ],
-            year = [ context['year'] ],
-            committee_type = type_codes,
-            party = party_codes,
-            per_page = self.page_count
-        )
+        return OpenFECCommittees(
+            self.command,
+            self.field_year,
+            self.page_count
+        ).fetch()
 
     def load_item(self, committee, context):
-        cycle_info = self._find_most_recent_year(committee.cycles, context['year'])
+        cycle_info = self._find_most_recent_year(committee.cycles, self.field_year)
         return [
             cycle_info['year'],
             committee.committee_id,
             committee.name.strip().title(),
-            committee.committee_type_full.title() if committee.committee_type_full else None,
-            committee.designation_full.title() if committee.designation_full else None,
+            committee.committee_type if committee.committee_type else None,
+            committee.designation if committee.designation else None,
             committee.filing_frequency,
             committee.state,
             committee.party,
-            committee.party_full.title() if committee.party_full else None,
             ",".join(committee.candidate_ids)
         ]
+
+
+class OpenFECCommittees(OpenFECAPI):
+
+    @property
+    def state_id(self):
+        return "committee-index-{}".format(self.year)
+
+
+    def fetch(self):
+        endpoint = 'committees'
+        options = {}
+        next_page = None
+
+        page = self.command.get_state(self.state_id, None)
+        if page:
+            options['page'] = page
+
+        options['year'] = [ self.year ]
+        options['sort'] = 'name'
+        initial_results = self.request(endpoint, options)
+
+        if initial_results.get('results', None) and len(initial_results['results']) > 0:
+            for result in initial_results['results']:
+                yield type('Committee', (object,), result)
+
+        if initial_results.get('pagination', None):
+            if initial_results['pagination'].get('pages', None):
+                if initial_results['pagination']['pages'] > 1:
+                    next_page = page + 1 if page else 2
+                    self.command.set_state(self.state_id, next_page)
+
+        if next_page:
+            while next_page <= initial_results['pagination']['pages']:
+                params = dict(options)
+                params['page'] = next_page
+                paged_results = self.request(endpoint, params)
+
+                if paged_results.get('results', None) and len(paged_results['results']) > 0:
+                    for result in paged_results['results']:
+                        yield type('Committee', (object,), result)
+
+                next_page += 1
+                self.command.set_state(self.state_id, next_page)
+
+        self.command.delete_state(self.state_id)
