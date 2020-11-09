@@ -1,3 +1,5 @@
+from django.conf import settings
+
 import os
 import time
 import requests
@@ -18,7 +20,7 @@ class OpenFECAPI(object):
         self.year = year
         self.page_count = page_count
 
-        self.api_key = os.environ.get('OPENFEC_API_KEY', None)
+        self.api_key = settings.OPENFEC_API_KEY
 
         self.ratelimit_remaining = 100
         self.wait_time = 0.5
