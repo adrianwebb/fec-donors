@@ -7,4 +7,4 @@ parents:
 post_run:
     app-environment:
         env:
-            OPENFEC_API_KEY: "@fec_openapi_key"
+            ZIMAGI_OPENFEC_API_KEY: "@fec_openapi_key"
