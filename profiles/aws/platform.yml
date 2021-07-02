@@ -1,4 +1,6 @@
 parents:
+    - aws/config
+
     - module: host
       profile: aws/platform
 

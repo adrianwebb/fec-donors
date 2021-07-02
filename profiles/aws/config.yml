@@ -1,6 +1,4 @@
-config_store:
-    platform_name: fec
-
+config:
     aws_networks:
         - us-east-1
 
