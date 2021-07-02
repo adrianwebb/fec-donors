@@ -5,4 +5,4 @@ requirements: requirements.txt
 
 modules:
     - remote: https://github.com/zimagi/host.git
-      reference: master
+      reference: main
