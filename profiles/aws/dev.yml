@@ -9,14 +9,14 @@ config:
     aws_importer_ebs_encrypted: false
     aws_importer_data_device: /dev/xvdb
 
-    aws_service_worker_subnet_names: "#keys(@aws_service_subnets || @aws_service_worker_subnet_prefix);"
+    aws_service_subnet_names: "#keys(@aws_service_subnets || @aws_service_subnet_prefix);"
 
 server:
     fec-dev:
         count: 1
         provider: ec2
         network: "@aws_network_names[0]"
-        subnet: "@aws_service_worker_subnet_names[0]"
+        subnet: "@aws_service_subnet_names[0]"
         image: "@aws_ubuntu_image[<network>]"
         ssh_port: "@ssh_port"
         user: "@aws_ubuntu_user"
