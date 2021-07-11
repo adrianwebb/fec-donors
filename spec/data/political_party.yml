@@ -30,7 +30,7 @@ data_base:
 data:
     political_party:
         class: PoliticalParty
-        base: environment
+        base: resource
         roles:
             edit: [fec-data-admin]
             view: [public]

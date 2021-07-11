@@ -30,9 +30,9 @@ data_base:
 data:
     committee:
         class: Committee
-        base: environment
+        base: resource
         mixins: [candidate_relation, year_relation, political_party, us_state]
-        id_fields: [committee_id, environment_id]
+        id_fields: [committee_id]
         key: committee_id
         roles:
             edit: [fec-data-admin]
@@ -59,7 +59,6 @@ data:
                     "null": true
                     max_length: 256
         meta:
-            unique_together: [environment, committee_id]
             ordering: [name]
             search_fields: [name, political_party__name, political_party__full_name, us_state__name]
 

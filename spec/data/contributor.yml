@@ -30,9 +30,9 @@ data_base:
 data:
     contributor:
         class: Contributor
-        base: environment
+        base: resource
         mixins: [us_state, us_city, us_zipcode, employer, occupation]
-        id_fields: [contributor_id, environment_id]
+        id_fields: [contributor_id]
         key: contributor_id
         roles:
             edit: [fec-data-admin]
@@ -70,7 +70,6 @@ data:
                     "null": true
                     max_length: 256
         meta:
-            unique_together: [environment, contributor_id]
             ordering: [first_name, middle_name, last_name]
             search_fields: [first_name, middle_name, last_name, city__name, state__name, zipcode__name, employer__name]
 

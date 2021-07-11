@@ -30,9 +30,9 @@ data_base:
 data:
     candidate:
         class: Candidate
-        base: environment
+        base: resource
         mixins: [political_party, political_office]
-        id_fields: [candidate_id, environment_id]
+        id_fields: [candidate_id]
         key: candidate_id
         roles:
             edit: [fec-data-admin]
@@ -55,7 +55,6 @@ data:
                     "null": true
                     max_length: 256
         meta:
-            unique_together: [environment, candidate_id]
             ordering: [first_name, last_name]
             search_fields: [first_name, last_name, party__name, party__full_name, office__name, office__fullname]
 

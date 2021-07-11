@@ -30,7 +30,7 @@ data_base:
 data:
     employer:
         class: Employer
-        base: environment
+        base: resource
         roles:
             edit: [fec-data-admin]
             view: [public]
