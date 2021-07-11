@@ -30,7 +30,7 @@ data_base:
 data:
     year:
         class: Year
-        base: environment
+        base: resource
         roles:
             edit: [fec-data-admin]
             view: [public]
