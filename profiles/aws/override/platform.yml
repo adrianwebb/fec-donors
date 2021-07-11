@@ -5,4 +5,4 @@ parents:
 profile:
     platform-service:
         module: fec
-        profile: aws/service
+        profile: aws/override/service
